@@ -1,0 +1,47 @@
+local BloxHax = {}
+BloxHax.AutoFarm = false
+BloxHax.Speed = 200
+BloxHax.FruitMagnet = false
+
+-- Функция для имитации авто-фарма
+function BloxHax:StartFruitFarm()
+    if not BloxHax.AutoFarm then return end
+    print("Собираем фрукты как босс!")
+    while BloxHax.AutoFarm do
+        for _, fruit in pairs(game.Workspace:GetChildren()) do
+            if fruit.Name == "DevilFruit" then
+                -- Телепортируем фрукт к игроку (в теории)
+                fruit.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+            end
+        end
+        wait(0.5)
+    end
+end
+
+-- Добавляем команду в Infinite Yield
+table.insert(cmds, {
+    ["Name"] = "fruitfarm",
+    ["Desc"] = "Авто-фарм фруктов в Blox Fruits",
+    ["Args"] = {{"on/off", "Вкл/выкл фарм"}},
+    ["Func"] = function(args)
+        BloxHax.AutoFarm = (args[1] == "on")
+        if BloxHax.AutoFarm then
+            BloxHax:StartFruitFarm()
+        end
+        print(BloxHax.AutoFarm and "Фарм включён, братишка!" or "Фарм выключен.")
+    end
+})
+
+-- Команда для скорости
+table.insert(cmds, {
+    ["Name"] = "speedhax",
+    ["Desc"] = "Меняем скорость в Blox Fruits",
+    ["Args"] = {{"number", "Скорость (default 200)"}},
+    ["Func"] = function(args)
+        local speed = tonumber(args[1]) or BloxHax.Speed
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
+        print("Теперь ты носишься со скоростью " .. speed .. "!")
+    end
+})
+
+print("BloxHax загружен! Вводи fruitfarm on или speedhax 500 в Infinite Yield!")
